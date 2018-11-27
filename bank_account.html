@@ -1,0 +1,57 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The Bank</title>
+  <meta name="description" content="The Bank">
+
+  <link rel="stylesheet" href="css/bank_account.css?v=1.0">
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="containerIntro">Welcome</h1><h1 id="userName" class="containerIntro"></h1>
+            </div>
+        </div>
+        <div class="customerAccountCard"> <!-- customer's account are below -->
+
+        </div>
+    </div>
+    <!-- End of container -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    
+    $(function(){
+        var $userName = $('#userName')
+        var $currentBalance = $('#currentBalance')
+        $.ajax({
+            type:'GET',
+            url: 'http://localhost:8080/api/bank/description/customer/id=5',
+            dataType: 'json',
+            success: function(data){
+                for (var i=0; i<data.accounts.length; i++) {
+                    $('.customerAccountCard').append(
+                    '<div class="card"><div class="bg-light text-dark four"><div class="card-body text-center"><h2 class="card-title containerIntro dataIntro dataIntroWord">'+data.accounts[i].accountType+'</h2><h2 class="containerIntro">Account</h2><span>Track your finances like a boss</span><h1 class="containerIntro">$</h1><h1 id="currentBalance" class="containerIntro dataIntro">'+data.accounts[i].balance+'</h1><p>Current Balance</p><div class="card-footer"><h4><a href="file:///C:/Users/cloud/Desktop/bankWeb/account_details.html?'+data.accounts[i].accountId+'" target="_blank">See details</a></h4></div></div></div></div><!--   End of card -->');
+                    }
+                $userName.append(data.name);
+                console.log(data);
+                console.log(data.accounts.length);
+                // $('.customerAccountCard').append('<div class="cloud"><p>'+$('#cloudName').val()+'</p><p>'+$('#cloudFamily').val()+'</p></div>');
+                
+
+            }
+        });
+    });
+    
+
+</script>
+</body>
+</html>

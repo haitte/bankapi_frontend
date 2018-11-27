@@ -1,0 +1,118 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The Bank</title>
+  <meta name="description" content="The Bank">
+
+  <link rel="stylesheet" href="css/bank_account.css?v=1.0">
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>Details</h1>
+            <div class="well">
+                <form class="form-horizontal">
+                <h3 class="text-center">My Account</h3>
+                <hr />
+                <div class="form-group">
+                    <label for="id" class="control-label col-sm-3">ID:</label>
+                    <div class="form-control-static col-sm-7">
+                        <label id="userID"></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="control-label col-sm-3">Name:</label>
+                    <div class="form-control-static col-sm-3">
+                    <label id="userName"></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address" class="control-label col-sm-3">Address:</label>
+                    <div class="form-control-static col-sm-3">
+                        <label id="userAddress"></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="control-label col-sm-3">E-mail:</label>
+                    <div class="form-control-static col-sm-3">
+                        <label id="userEmail"></label>
+                    </div>
+                </div>
+            
+                </form>
+            </div>
+            <!-- transcation list -->
+            <div class="transcationList">
+                    <h1>Transcation Details</h1>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">transactionId</th>
+                            <th scope="col">date</th>
+                            <th scope="col">type</th>
+                            <th scope="col">amount</th>
+                            <th scope="col">post_transaction</th>
+                            <th scope="col">description</th>
+                        </tr>
+                    </thead>
+                    <tbody class="transcationTable">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(function(){
+        var $userID = $('#userID')
+        var $userName = $('#userName')
+        var $userAddress = $('#userAddress')
+        var $userEmail = $('#userEmail')
+        $.ajax({
+            type:'GET',
+            url: 'http://localhost:8080/api/bank/description/customer/id=5',
+            dataType: 'json',
+            success: function(data){
+                $userID.append(data.customerId);
+                $userName.append(data.name);
+                $userAddress.append(data.address);
+                $userEmail.append(data.email);
+            }
+        });
+    });
+    $(function(){
+        var query = window.location.search.substring(1);
+        console.log("query:"+query);
+        var vars = query.split("?");
+        console.log("vars:"+vars);
+        // for (var i=0;i<vars.length;i++) {
+        //         var pair = vars[i].split("=");
+        //         if(pair[0] == variable){return pair[1];}
+        // }
+        // return(false);
+        // //Getting the parameter-
+        // v = query_string('v');  // Will return '12345' if url is www.example.com/?v=12345
+
+        $.ajax({
+            type:'GET',
+            url: 'http://localhost:8080/api/bank/description/customer/account/'+vars,
+            dataType: 'json',
+            success: function(data){
+                for (var i=0; i<data.transactions.length; i++) {
+                    $('.transcationTable').append('<tr><td>'+data.transactions[i].transactionId+'</td><td>'+data.transactions[i].date+'</td><td>'+data.transactions[i].type+'</td><td>'+data.transactions[i].amount+'</td><td>'+data.transactions[i].post_transaction+'</td><td>'+data.transactions[i].description+'</td></tr>');
+                    }
+                // $('.transcationTable').append('<div class="cloud"><p>'+$('#cloudName').val()+'</p><p>'+$('#cloudFamily').val()+'</p></div>');
+                
+
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

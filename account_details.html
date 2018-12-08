@@ -21,7 +21,13 @@
                 <h3 class="text-center">My Account</h3>
                 <hr />
                 <div class="form-group">
-                    <label for="id" class="control-label col-sm-3">ID:</label>
+                    <label class="control-label col-sm-3">Balance:</label>
+                    <div class="form-control-static col-sm-7">
+                        <label class="getbalance"></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id" class="control-label col-sm-3">Customer ID:</label>
                     <div class="form-control-static col-sm-7">
                         <label id="userID"></label>
                     </div>
@@ -44,12 +50,112 @@
                         <label id="userEmail"></label>
                     </div>
                 </div>
-            
                 </form>
+                <hr />
+                <button type="button" class="btn btn-primary padding" id="lodgement">
+                    Lodgement
+                </button>
+                <button type="button" class="btn btn-primary padding" id="transfer">
+                    Transfer
+                </button>
+                <button type="button" class="btn btn-primary padding" id="withdrawal">
+                    Withdrawal
+                </button>
+                <hr />
+
+                <!-- lodgement -->
+                <div class="padding"  id="lodgementSelection" style="display: none;">
+                    <h2>Lodgement Form</h2>
+                    <form id="lodgementForm">
+                        <div class="form-group">
+                            <label for="lodgementFormInput1">Amount</label>
+                            <input type="number" min="0" class="form-control" id="lodgementFormInput1">
+                        </div>
+                        <div class="form-group">
+                            <label for="lodgementFormInput2">Description</label>
+                            <input type="text" class="form-control" id="lodgementFormInput2">
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-primary padding-t" id="SubmitLodgement">
+                        Submit
+                    </button>
+                    <button type="button" class="btn btn-primary padding-t" id="cancelLodgement">
+                        Cancel
+                    </button>
+                    <hr />
+                </div>
+
+                <!-- transfer -->
+                <div class="padding"  id="transferSelection" style="display: none;">
+                    <h2>Transfer Form</h2>
+                    <form id="transferForm">
+                        <div class="form-group">
+                            <label for="transferFormInput1">Amount</label>
+                            <input type="number" min="0" class="form-control" id="transferFormInput1" name="amount">
+                        </div>
+                        <div class="form-group">
+                            <label for="transferFormInput2">Description</label>
+                            <input type="text" class="form-control" id="transferFormInput2" name="description">
+                        </div>
+                        <div class="form-group">
+                            <label for="transferFormInput3">To another account</label>
+                            <input type="text" class="form-control" id="transferFormInput3" placeholder="account id" name="anotherAccount">
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-primary padding-t" id="SubmitTransfer">
+                        Submit
+                    </button>
+                    <button type="button" class="btn btn-primary padding-t" id="cancelTransfer">
+                        Cancel
+                    </button>
+                    <hr />
+                </div>
+
+                <!-- withdrawal -->
+                <div class="padding"  id="withdrawalSelection" style="display: none;">
+                    <h2>Withdrawal Form</h2>
+                    <form id="withdrawalForm">
+                        <div class="form-group">
+                            <label for="withdrawalFormInput1">Amount</label>
+                            <input type="number" min="0" class="form-control" id="withdrawalFormInput1">
+                        </div>
+                        <div class="form-group">
+                            <label for="withdrawalFormInput2">Description</label>
+                            <input type="text" class="form-control" id="withdrawalFormInput2">
+                        </div>
+                    </form>
+                    <button type="button" class="btn btn-primary padding-t" id="SubmitWithdrawal">
+                        Submit
+                    </button>
+                    <button type="button" class="btn btn-primary padding-t" id="cancelWithdrawal">
+                        Cancel
+                    </button>
+                    <div class="alert alert-success padding-t" role="alert" id="withdrawal-success" style="display: none;">Success</div>
+                    <div class="alert alert-danger padding-t" role="alert" id="withdrawal-danger" style="display: none;"></div>
+                    <hr />
+                </div>
             </div>
             <!-- transcation list -->
             <div class="transcationList">
                     <h1>Transcation Details</h1>
+                    <div class="row" style="margin-left:10px">
+                        <label for="balance" class="control-label col-sm-3">Balance:</label>
+                        <div class="form-control-static col-sm-7">
+                            <label class="getbalance"></label>
+                        </div>
+                        <label for="sortCode" class="control-label col-sm-3">Sort code:</label>
+                        <div class="form-control-static col-sm-7">
+                            <label id="usersortCode"></label>
+                        </div>
+                        <label for="accountid" class="control-label col-sm-3">Account ID:</label>
+                        <div class="form-control-static col-sm-7">
+                            <label id="useraccountID"></label>
+                        </div>
+                        <label for="accountType" class="control-label col-sm-3">Account type:</label>
+                        <div class="form-control-static col-sm-7">
+                            <label id="getaccountType"></label>
+                        </div>
+                    </div>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -57,7 +163,7 @@
                             <th scope="col">date</th>
                             <th scope="col">type</th>
                             <th scope="col">amount</th>
-                            <th scope="col">post_transaction</th>
+                            <th scope="col">post transaction</th>
                             <th scope="col">description</th>
                         </tr>
                     </thead>
@@ -68,14 +174,161 @@
         </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+        $(document).ready(function($) {
+            // lodgement
+        $("#lodgement").click(function(){
+            document.getElementById("lodgementSelection").style.display="block";
+        });
+        $("#cancelLodgement").click(function(){
+            document.getElementById("lodgementSelection").style.display="none";
+            document.getElementById("lodgementFormInput1").value = "";
+            document.getElementById("lodgementFormInput2").value = "";
+        });
+        // transfer
+        $("#transfer").click(function(){
+            document.getElementById("transferSelection").style.display="block";
+        });
+        $("#cancelTransfer").click(function(){
+            document.getElementById("transferSelection").style.display="none";
+            document.getElementById("transferFormInput1").value = "";
+            document.getElementById("transferFormInput2").value = "";
+            document.getElementById("transferFormInput3").value = "";
+        });
+        // withdrawal
+        $("#withdrawal").click(function(){
+            document.getElementById("withdrawalSelection").style.display="block";
+        });
+        $("#cancelWithdrawal").click(function(){
+            document.getElementById("withdrawalSelection").style.display="none";
+            document.getElementById("withdrawalFormInput1").value = "";
+            document.getElementById("withdrawalFormInput2").value = "";
+        });
+
+        $('#SubmitLodgement').on('click', function () {
+            var query = window.location.search.substring(1);
+            var vars = query.split("?");
+            var vars2 = query.split("&");
+            var lodgementAmount = $('#lodgementFormInput1').val();
+            var lodgementDescription = $('#lodgementFormInput2').val();
+            console.log(vars,lodgementAmount,lodgementDescription)
+            _data = {
+                    "type": "credit",
+                    "amount": lodgementAmount,
+                    "postTransaction": 0,
+                    "description": lodgementDescription,
+                    "accountId": vars2[1]
+                }
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                url:'http://localhost:8080/api/bank/credit',
+                data: JSON.stringify( _data ),
+                statusCode: {
+                            204: function() {
+                                setTimeout(
+                                    function() 
+                                    {
+                                        location.reload();
+                                    }, 100);
+                            }
+                            },
+                success: function(data) {        
+                },
+                error: function() {
+                    console.log("Data didn't get sent!!");
+                }
+            })
+        });
+        $('#SubmitWithdrawal').on('click', function () {
+            var query = window.location.search.substring(1);
+            var vars = query.split("?");
+            var vars2 = query.split("&");
+            var withdrawalAmount = $('#withdrawalFormInput1').val();
+            var withdrawalDescription = $('#withdrawalFormInput2').val();
+            console.log(vars,withdrawalAmount,withdrawalDescription)
+            _data = {
+                    "type": "debit",
+                    "amount": withdrawalAmount,
+                    "postTransaction": 0,
+                    "description": withdrawalDescription,
+                    "accountId": vars2[1]
+                }
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                url:'http://localhost:8080/api/bank/withdrawal',
+                data: JSON.stringify( _data ),
+                statusCode: {
+                            204: function() {
+                                document.getElementById("withdrawal-success").style.display="block";
+                                // $("#withdrawal-success").text(jqxhr.responseText); 
+                                setTimeout(
+                                    function() 
+                                    {
+                                        location.reload();
+                                    }, 100);
+                            },
+                            409: function(jqxhr) {
+                                document.getElementById("withdrawal-danger").style.display="block";
+                                $("#withdrawal-danger").text(jqxhr.responseText); 
+                            }
+                            },
+                success: function(data) {        
+                },
+                error: function() {
+                    console.log("Data didn't get sent!!");
+                }
+            })
+        });
+        $('#SubmitTransfer').on('click', function () {
+            var query = window.location.search.substring(1);
+            var vars = query.split("?");
+            var vars2 = query.split("&");
+            var transferAmount = $('#transferFormInput1').val();
+            var transferDescription = $('#transferFormInput2').val();
+            var transferanother = $('#transferFormInput3').val();
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                url:'http://localhost:8080/api/bank/transfer/'+vars2[1] +'/'+transferanother+'?amount='+transferAmount+'&description='+transferDescription,
+                // data: {id: vars[0], amount: transferAmount, description:transferDescription, anotherId:transferanother},
+                statusCode: {
+                            204: function() {
+                                document.getElementById("withdrawal-success").style.display="block";
+                                // $("#withdrawal-success").text(jqxhr.responseText); 
+                                setTimeout(
+                                    function() 
+                                    {
+                                        location.reload();
+                                    }, 100);
+                            },
+                            409: function(jqxhr) {
+                                document.getElementById("withdrawal-danger").style.display="block";
+                                $("#withdrawal-danger").text(jqxhr.responseText); 
+                            }
+                            },
+                success: function(data) {        
+                },
+                error: function() {
+                    console.log("Data didn't get sent!!");
+                }
+            })
+        });
+    })
     $(function(){
+        var query = window.location.search.substring(1);
+        var vars = query.split("?");
+        var vars2 = query.split("&");
         var $userID = $('#userID')
         var $userName = $('#userName')
         var $userAddress = $('#userAddress')
         var $userEmail = $('#userEmail')
         $.ajax({
             type:'GET',
-            url: 'http://localhost:8080/api/bank/description/customer/id=5',
+            url: 'http://localhost:8080/api/bank/description/customer/'+vars2[0],
             dataType: 'json',
             success: function(data){
                 $userID.append(data.customerId);
@@ -85,11 +338,27 @@
             }
         });
     });
+    function formatDate(date) {
+        var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+        var d = new Date(date);
+        var formattedDate = d.getDate() + "-" + monthNames[(d.getMonth())] /*(d.getMonth() + 1) -- month in number*/+ "-" + d.getFullYear();
+        var hours = (d.getHours() < 10) ? "0" + d.getHours() : d.getHours();
+        var minutes = (d.getMinutes() < 10) ? "0" + d.getMinutes() : d.getMinutes();
+        var formattedTime = hours + ":" + minutes;
+
+        return formattedDate + ' ' + formattedTime;
+    }
     $(function(){
         var query = window.location.search.substring(1);
         console.log("query:"+query);
         var vars = query.split("?");
-        console.log("vars:"+vars);
+        var vars2 = query.split("&");
+        console.log("vars:"+vars+'; 2='+vars2[0]+'; 3='+vars2[1]);
         // for (var i=0;i<vars.length;i++) {
         //         var pair = vars[i].split("=");
         //         if(pair[0] == variable){return pair[1];}
@@ -100,15 +369,16 @@
 
         $.ajax({
             type:'GET',
-            url: 'http://localhost:8080/api/bank/description/customer/account/'+vars,
+            url: 'http://localhost:8080/api/bank/description/customer/account/'+vars2[1],
             dataType: 'json',
             success: function(data){
+                $('#usersortCode').append(data.sortCode);
+                $('#useraccountID').append(data.accountId);
+                $('.getbalance').append(data.balance);
+                $('#getaccountType').append(data.accountType);
                 for (var i=0; i<data.transactions.length; i++) {
-                    $('.transcationTable').append('<tr><td>'+data.transactions[i].transactionId+'</td><td>'+data.transactions[i].date+'</td><td>'+data.transactions[i].type+'</td><td>'+data.transactions[i].amount+'</td><td>'+data.transactions[i].post_transaction+'</td><td>'+data.transactions[i].description+'</td></tr>');
+                    $('.transcationTable').append('<tr><td>'+data.transactions[i].transactionId+'</td><td>'+(formatDate(data.transactions[i].date))+'</td><td>'+data.transactions[i].type+'</td><td>'+data.transactions[i].amount+'</td><td>'+data.transactions[i].postTransaction+'</td><td>'+data.transactions[i].description+'</td></tr>');
                     }
-                // $('.transcationTable').append('<div class="cloud"><p>'+$('#cloudName').val()+'</p><p>'+$('#cloudFamily').val()+'</p></div>');
-                
-
             }
         });
     });

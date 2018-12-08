@@ -13,7 +13,12 @@ body {
   flex-wrap: wrap;
   justify-content: center; */
 }
-
+.padding{
+  margin: 1% 2%;
+}
+.padding-t{
+  margin: 1% 0;
+}
 .border-shadow-left{
     border-left: 1px solid #dbd8cf;
     background: linear-gradient(left, #eee  0%, #fff 10%);

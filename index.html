@@ -13,7 +13,6 @@
 
 <body>
 <div class="form">
-      
       <ul class="tab-group">
         <li class="tab active"><a href="#signup">Sign Up</a></li>
         <li class="tab"><a href="#login">Log In</a></li>
@@ -21,73 +20,128 @@
       
       <div class="tab-content">
         <div id="signup">   
-          <h1>Sign Up for Free</h1>
-          
-          <form action="/" method="post">
-          
-          <div class="top-row">
+          <h1>Sign Up</h1>
+                
             <div class="field-wrap">
               <label>
-                First Name<span class="req">*</span>
+                Name<span class="req">*</span>
               </label>
-              <input type="text" required autocomplete="off" />
+              <input type="text" required autocomplete="off" id="submitFormInput1"/>
             </div>
-        
+
             <div class="field-wrap">
-                       
-            </div>
-          </div>
+                <label>
+                  Address<span class="req">*</span>
+                </label>
+                <input type="text"required autocomplete="off" id="submitFormInput2"/>
+              </div>
 
           <div class="field-wrap">
             <label>
               Email Address<span class="req">*</span>
             </label>
-            <input type="email"required autocomplete="off"/>
+            <input type="email"required autocomplete="off" id="submitFormInput3"/>
           </div>
           
           <div class="field-wrap">
             <label>
               Set A Password<span class="req">*</span>
             </label>
-            <input type="password"required autocomplete="off"/>
+            <input type="password"required autocomplete="off" id="submitFormInput4"/>
           </div>
           
-          <button type="submit" class="button button-block"/>Get Started</button>
-          
-          </form>
+          <button type="submit" class="button button-block" id="submitregister">Get Started</button>          
 
         </div>
         
         <div id="login">   
-          <h1>Welcome Back!</h1>
-          
-          <form action="/" method="post">
-          
+          <h1>Welcome Back!</h1>         
             <div class="field-wrap">
             <label>
               Email Address<span class="req">*</span>
             </label>
-            <input type="email"required autocomplete="off"/>
+            <input type="email"required autocomplete="off" id="loginFormInput1"/>
           </div>
           
           <div class="field-wrap">
             <label>
               Password<span class="req">*</span>
             </label>
-            <input type="password"required autocomplete="off"/>
+            <input type="password"required autocomplete="off" id="loginFormInput2"/>
           </div>
           
-          <button class="button button-block"/>Log In</button>
-          
-          </form>
-
+          <button class="button button-block" id="submitlogin">Log In</button>
+        
         </div>
         
-      </div><!-- tab-content -->
+      </div>t
       
 </div> <!-- /form -->
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="js/scripts.js"></script>
+  <script>
+  $(document).ready(function($) {
+
+    $('#submitlogin').on('click', function () {
+
+        var loginEmail = $('#loginFormInput1').val();
+        var loginPW = $('#loginFormInput2').val();
+        _data = {
+                "email": loginEmail,
+                "password": loginPW
+            }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            url:'http://localhost:8080/api/bank/login',
+            data: JSON.stringify( _data ),
+            statusCode: {
+                        200: function(response) {
+                          window.location.href = 'bank_account.html?'+response;
+                          console.log(response);
+                        }
+                        },
+            success: function(data) {        
+            },
+            error: function() {
+                console.log("Data didn't get sent!!");
+            }
+        })
+    });
+    $('#submitregister').on('click', function () {
+        var query = window.location.search.substring(1);
+        var vars = query.split("?");
+        var submitname = $('#submitFormInput1').val();
+        var submitaddress = $('#submitFormInput2').val();
+        var submitemail = $('#submitFormInput3').val();
+        var submitpassword = $('#submitFormInput4').val();
+        _data = {
+                "name": submitname,
+                "address": submitaddress,
+                "email": submitemail,
+                "password": submitpassword,
+            }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            url:'http://localhost:8080/api/bank/register',
+            data: JSON.stringify( _data ),
+            statusCode: {
+                        200: function(response) {
+                          window.location.href = 'bank_account.html?'+response;
+                        }
+                        },
+            success: function(data) {        
+            },
+            error: function() {
+                console.log("Data didn't get sent!!");
+            }
+        })
+    });
+})
+  </script>
 </body>
 </html>
